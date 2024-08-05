@@ -39,6 +39,7 @@ void setup() {
 
   Serial.begin(9600);
   delay(1000);
+  powerOnWipe(strip_back.Color(255, 100, 0), 50);
 }
 
 
@@ -78,8 +79,6 @@ void loop() {
 
 }
 
-
-/
 void colorWipeLeft(uint32_t color, int wait) {
   for (int i = 0; i < strip_left.numPixels(); i++) { // For each pixel in strip_back...
     strip_left.setPixelColor(i, color);         //  Set pixel's color (in RAM)
@@ -87,6 +86,62 @@ void colorWipeLeft(uint32_t color, int wait) {
     delay(wait);                           //  Pause for a moment
     strip_left.clear();
   }
+}
+
+void powerOnWipe(uint32_t color, int wait) {  // First, sequentially light up all LEDs
+  for (int i = 0; i < strip_back.numPixels(); i++) {
+    strip_back.setPixelColor(i, color);       // Set color for back strip
+    if (i < strip_left.numPixels()) {        // Set color for left and right strips, handling indexing within their bounds
+      strip_left.setPixelColor(i, color);
+    }
+    if (i < strip_right.numPixels()) {
+      strip_right.setPixelColor(i, color);
+    }
+
+    
+    strip_back.show();                 // Update strips with new color
+    strip_left.show();
+    strip_right.show();
+    delay(wait);    // Pause to create the effect of lighting up one LED at a time
+  }
+
+  // Keep all LEDs on for a moment before blinking
+  delay(500); // Adjust this delay as needed
+
+
+  for (int j = 0; j < 2; j++) {   // Blink twice
+   
+    strip_back.clear();  // Turn off all LEDs
+    strip_left.clear();
+    strip_right.clear();
+    strip_back.show();
+    strip_left.show();
+    strip_right.show();
+    delay(200); // Off period
+
+    // Turn on all LEDs
+    for (int i = 0; i < strip_back.numPixels(); i++) {
+      strip_back.setPixelColor(i, color);
+      if (i < strip_left.numPixels()) {
+        strip_left.setPixelColor(i, color);
+      }
+      if (i < strip_right.numPixels()) {
+        strip_right.setPixelColor(i, color);
+      }
+    }
+    strip_back.show();
+    strip_left.show();
+    strip_right.show();
+    delay(200); // On period
+  }
+
+  // Finally, turn off all LEDs
+  strip_back.clear();
+  strip_left.clear();
+  strip_right.clear();
+  strip_back.show();
+  strip_left.show();
+  strip_right.show();
 }
 
 
@@ -127,14 +182,10 @@ void colorBlinkersRight(uint32_t c, int wait) {
 }
 
 
-void sixNine() {
-  rainbow_back(10);
-}
-
 
 void hazardBlink() {
 
-  for (int i = 0; i < 4; i++) { 
+  for (int i = 0; i < 4; i++) { // For each pixel in strip_back...
 
     colorBlinkersLeft(strip_left.Color(255,   100,   0), 50); //Yellow
     colorBlinkersRight(strip_right.Color(255,   100,   0), 50); //Yellow
@@ -209,7 +260,7 @@ void colorBlinkersHazard(uint32_t c, int wait) {
 
 
 void colorWipeRight(uint32_t color, int wait) {
-  for (int i = 0; i < strip_right.numPixels(); i++) {// For each pixel in strip_back...
+  for (int i = 0; i < strip_right.numPixels(); i++) { // For each pixel in strip_back...
     strip_right.setPixelColor(i, color);         //  Set pixel's color (in RAM)
     strip_right.show();                          //  Update strip_back to match
     delay(wait);                           //  Pause for a moment
@@ -219,6 +270,8 @@ void colorWipeRight(uint32_t color, int wait) {
 
 
 
+
+// Fill the dots one after the other with a color
 void turnRight(uint32_t c, uint8_t wait) {
 
   strip_back.setPixelColor(0, c);
@@ -249,7 +302,7 @@ void turnRight(uint32_t c, uint8_t wait) {
 }
 
 
-
+// Fill the dots one after the other with a color
 void turnLeft(uint32_t c, uint8_t wait) {
 
  
@@ -283,84 +336,6 @@ void turnLeft(uint32_t c, uint8_t wait) {
 }
 
 
-void theaterChaseRainbow(int wait) {
-  int firstPixelHue = 0;     // First pixel starts at red (hue 0)
-  for (int a = 0; a < 30; a++) { // Repeat 30 times...
-    for (int b = 0; b < 3; b++) { //  'b' counts from 0 to 2...
-      strip_back.clear();         //   Set all pixels in RAM to 0 (off)
-      // 'c' counts up from 'b' to end of strip_back in increments of 3...
-      for (int c = b; c < strip_back.numPixels(); c += 3) {
-        // hue of pixel 'c' is offset by an amount to make one full
-        // revolution of the color wheel (range 65536) along the length
-        // of the strip_back (strip_back.numPixels() steps):
-        int hue   = firstPixelHue + c * 65536L / strip_back.numPixels();
-        uint32_t color = strip_back.gamma32(strip_back.ColorHSV(hue)); // hue -> RGB
-        strip_back.setPixelColor(c, color); // Set pixel 'c' to value 'color'
-      }
-      strip_back.show();                // Update strip_back with new contents
-      delay(wait);                 // Pause for a moment
-      firstPixelHue += 65536 / 90; // One cycle of color wheel over 90 frames
-    }
-  }
-}
-
-
-
-void rainbow_back(int wait) {
-
-  for (long firstPixelHue = 0; firstPixelHue < 5 * 65536; firstPixelHue += 256) {
-    for (int i = 0; i < strip_back.numPixels(); i++) { // For each pixel in strip_back...
-
-      int pixelHue = firstPixelHue + (i * 65536L / strip_back.numPixels());
-
-      strip_back.setPixelColor(i, strip_back.gamma32(strip_back.ColorHSV(pixelHue)));
-      strip_left.setPixelColor(i, strip_right.gamma32(strip_right.ColorHSV(pixelHue)));
-      strip_right.setPixelColor(i, strip_right.gamma32(strip_right.ColorHSV(pixelHue)));
-
-
-    }
-    strip_back.show(); // Update strip_back with new contents
-    strip_left.show(); // Update strip_back with new contents
-    strip_right.show(); // Update strip_back with new contents
-
-
-    delay(wait);  // Pause for a moment
-  }
-}
-
-
-
-void rainbow_left(int wait) {
-
-  for (long firstPixelHue = 0; firstPixelHue < 5 * 65536; firstPixelHue += 256) {
-    for (int i = 0; i < strip_left.numPixels(); i++) { // For each pixel in strip_back...
-
-      int pixelHue = firstPixelHue + (i * 65536L / strip_back.numPixels());
-
-      strip_left.setPixelColor(i, strip_left.gamma32(strip_left.ColorHSV(pixelHue)));
-    }
-    strip_left.show(); // Update strip_back with new contents
-    delay(wait);  // Pause for a moment
-  }
-}
-
-
-
-void rainbow_right(int wait) {
-
-  for (long firstPixelHue = 0; firstPixelHue < 5 * 65536; firstPixelHue += 256) {
-    for (int i = 0; i < strip_right.numPixels(); i++) { // For each pixel in strip_back...
-
-      int pixelHue = firstPixelHue + (i * 65536L / strip_right.numPixels());
-
-      strip_right.setPixelColor(i, strip_right.gamma32(strip_right.ColorHSV(pixelHue)));
-    }
-    strip_right.show(); // Update strip_back with new contents
-    delay(wait);  // Pause for a moment
-  }
-}
-
-
 void colorShow(uint32_t color, int wait) {
   for (int i = 0; i < strip_back.numPixels(); i++) { // For each pixel in strip_back...
     strip_back.setPixelColor(i, color);         //  Set pixel's color (in RAM)
@@ -372,21 +347,6 @@ void colorShow(uint32_t color, int wait) {
 }
 
 
-void theaterChase(uint32_t color, int wait) {
-  for (int a = 0; a < 10; a++) { // Repeat 10 times...
-    for (int b = 0; b < 3; b++) { //  'b' counts from 0 to 2...
-      strip_back.clear();         //   Set all pixels in RAM to 0 (off)
-      // 'c' counts up from 'b' to end of strip_back in steps of 3...
-      for (int c = b; c < strip_back.numPixels(); c += 3) {
-        strip_back.setPixelColor(c, color); // Set pixel 'c' to value 'color'
-      }
-      strip_back.show(); // Update strip_back with new contents
-      delay(wait);  // Pause for a moment
-      strip_back.clear();
-
-    }
-  }
-}
 
 void clearLights() {
   strip_left.clear();
