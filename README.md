@@ -52,4 +52,31 @@ Welcome to the **LightVest** project! This wearable vest is designed to enhance 
 
 3. #### Enclosure
    - The 3D printing files for the enclosure are located in the `3D_Print` folder. Below is a preview of the enclosure design:
-     - **Enclosure Design Preview**: 
+     - **Enclosure Design Preview**: ![Enclosure Design](3D_Print/pic.png)
+
+## 💻 Software Setup
+
+1. ### Clone the Repository
+
+```bash
+git clone https://github.com/pumpkins628/Light-for-You.git
+cd Light-for-You
+```
+
+2. ### Upload Code
+
+ - Open the Arduino IDE.
+- Find the `Code/LED_suit_vest_bluetooth` folder and open the `LED_suit_vest_bluetooth.ino` file.
+  Upload this code to the Arduino Nano, which you want to use to control the vest.
+- Find the `Code/control` folder and open the `control.ino` file.
+  Upload this code to the Arduino Nano, which you want to use to connect the light on the vest.
+
+🚨 **Library Setup**
+<br>
+- Don't forget to import the required libraries into the Arduino IDE:
+The necessary libraries can be found in the `Test` folder.
+- To import a library, go to Sketch > Include Library > Add .ZIP Library... in the Arduino IDE, then select the relevant library files from the `Test` folder.
+
+## 🚴‍♂️ Usage
+## 🤝 Contributing
+I welcome contributions! If you'd like to improve this project, feel free to fork the repository, create a new branch, and submit a pull request!
