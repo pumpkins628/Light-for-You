@@ -3,7 +3,7 @@ Welcome to the **LightVest** project! This wearable vest is designed to enhance 
 👇 ***Click the image below to watch the introduction video!*** 🎥
 
 <p align="center">
-  <a href="https://vm.tiktok.com/ZGe3Jf7d9/">
+  <a href="https://vm.tiktok.com/ZGe3J54N1/">
     <img src="Pic/1.jpg" alt="Click to watch the video"width="300" />
   </a>
 </p>
