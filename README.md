@@ -78,5 +78,21 @@ The necessary libraries can be found in the `Test` folder.
 - To import a library, go to Sketch > Include Library > Add .ZIP Library... in the Arduino IDE, then select the relevant library files from the `Test` folder.
 
 ## 🚴‍♂️ Usage
+
+### Power On
+- Turn on the vest and remote by clicking their own switches.
+
+### Control Signals
+- **Left Turn**: Press the left button on the remote or turn the handlebars left.
+- **Right Turn**: Press the right button on the remote or turn the handlebars right.
+- **Hazard Lights**: Press the middle button on the remote to activate the hazard lights.
+
+### Ride Safely
+- Your vest will automatically display the correct signals based on your inputs!
+  <br>
+<p align="center">
+  <img src="Pic/2.jpg" alt="Usage" width="500"/>
+</p>
+
 ## 🤝 Contributing
 I welcome contributions! If you'd like to improve this project, feel free to fork the repository, create a new branch, and submit a pull request!
