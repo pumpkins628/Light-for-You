@@ -36,3 +36,20 @@ Welcome to the **LightVest** project! This wearable vest is designed to enhance 
 | **Jumper wires**                     | Several  | For connecting components                           |
 | **Resistors**                        | Various  | To limit current and protect components             |
 | **Capacitors**                       | Various  | For filtering and stabilizing voltage               |
+
+2. #### Assembly
+
+ **Bluetooth Pairing**:
+   - Use a serial debugging tool to pair the two Bluetooth modules. The relevant software can be found in the `Test` folder.
+   
+ **Wiring the Components**:
+   - Connect all components according to the wiring diagrams provided. The diagrams for the two sections are shown below:
+     - **Remote Controller Wiring Diagram**: ![Remote Wiring](Wiring/LED_bike_remote.png)
+     - **Vest Wiring Diagram**: ![Vest Wiring](Wiring/LED_bike_vest.png)
+     
+ **PCB Design**:
+- The PCB design files are located in the `PCB` folder. If you wish to have your own vest, feel free to download them.
+
+3. #### Enclosure
+   - The 3D printing files for the enclosure are located in the `3D_Print` folder. Below is a preview of the enclosure design:
+     - **Enclosure Design Preview**: 
